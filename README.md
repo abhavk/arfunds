@@ -8,8 +8,15 @@ In order to test a sample (`zJ0pvRVzCHREMy1Yy4MuvXgI5Ge0rr4bpV6-keKhw5E`) contra
 # Install dependencies
 $ yarn add arweave redstone-smartweave
 
-# Read state of existing contract
+# Read state of deployed test contract
 $ node src/deployment/read.js
+
+# Contribute to test pool (burns 0.001 AR every time!)
+$ node src/deployment/contribute.js
+
+# for local testing
+$ yarn add arlocal@1.1.30
+$ node simple-test.js
 ``` 
 
 ## Reading from this contract

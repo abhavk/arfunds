@@ -5,7 +5,7 @@ const path = require("path");
 const { TsLogFactory } = require("redstone-smartweave/lib/cjs/logging/node/TsLogFactory");
 
 
-const contractTxId = "zJ0pvRVzCHREMy1Yy4MuvXgI5Ge0rr4bpV6-keKhw5E";
+const contractTxId = "cqZRZU5FtMZUreEgtZJ4aBuXyydBzY3Ru_bippk1GP4";
 
 async function archivePoolClient() {
 	const arweave = Arweave.init({
