@@ -27,3 +27,5 @@ $ node simple-test.js
 
 ## Reading from this contract
 `arfunds` contracts are currently deployed with the tag `Archiving-Pool-v0.1` and the contract source is `IpC5qdc3RR04Skcia8VNghBd4WD17rzBgsjPc6t1wMI` on the Arweave network. 
+
+Help public data archival projects raise some `arfunds`!
