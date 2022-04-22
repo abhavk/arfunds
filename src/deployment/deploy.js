@@ -7,8 +7,20 @@ const corp_scripts = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wall
 
 (async () => {
 	// Load contract src and initState, set tags
+	// Arweave and SmartWeave initialization
+        const arweave = Arweave.init({
+                host: "arweave.net",
+                port: 443,
+                protocol: "https",
+        });
+	const wallet = await arweave.wallets.generate();
+        const walletAddress = await arweave.wallets.jwkToAddress(wallet);
 	const contractSrc = fs.readFileSync(path.join(__dirname, "../contracts/contract.js"), "utf8");
-        const initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
+        var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
+	const initJson = JSON.parse(initState);
+	initJson.owner = walletAddress;
+	initState = JSON.stringify(initJson, null, 2);
+	
 	const customTags = [
                 {
                         "name": "App-Type",
@@ -16,12 +28,6 @@ const corp_scripts = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wall
                 }
         ]
 
-	// Arweave and SmartWeave initialization
-  	const arweave = Arweave.init({
-    		host: "arweave.net",
-    		port: 443,
-    		protocol: "https",
-  	});
   	
 	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
 	
