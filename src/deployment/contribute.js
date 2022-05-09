@@ -5,7 +5,7 @@ const path = require('path');
 const Arweave = require('arweave');
 const { SmartWeaveNodeFactory, LoggerFactory } = require("redstone-smartweave");
 
-const contractTxId = "1mKRVBryZ_sGKJXlH2-h1takvfwwzyriK83uWTGmEEk";
+const contractTxId = "6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I";
 
 async function archivePoolClient(wallet) {
         const arweave = Arweave.init({
@@ -29,9 +29,9 @@ async function archivePoolClient(wallet) {
 	const interactionTx = await contract.writeInteraction({
                 function: "contribute"
         }, [], {
-                target: '5gCp0enK4lKK55yBvpntj8N9SwtRf9XV7_I8zHRXHyU',
-		// .001 AR
-                winstonQty: '1000000000'
+                target: 'bPVcHEkxWOVTknAK3HQtaE6qW3jzK-zpgxMi4bFmydI',
+		// .000001 AR
+                winstonQty: '1000000'
         });
 	console.log(`interaction sent! id: ${interactionTx}`);
 }
