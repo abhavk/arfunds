@@ -65,5 +65,16 @@ export default class Arfund {
 		const state = await this.getState();
 		return selectTokenHolder(state.tokens, state.totalSupply);
 	}
-		
+	
+	async contribute(amount: string) {
+		const contractInteractor = this.contract.connect("use_wallet");
+		const interactionTx = await contractInteractor.writeInteraction({
+                	function: "contribute"
+        	    }, [], {
+                	target: 'bPVcHEkxWOVTknAK3HQtaE6qW3jzK-zpgxMi4bFmydI',
+                	// .000001 AR
+                	winstonQty: amount
+        	});
+		return interactionTx;
+	}		
 }
