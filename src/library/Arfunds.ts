@@ -2,9 +2,23 @@ import Arweave from "arweave";
 import { LoggerFactory, SmartWeaveNodeFactory } from "redstone-smartweave";
 import NodeCache from "node-cache";
 import { selectTokenHolder } from "./selectRandomHolder";
+import { queryContracts } from "./queryContracts";
+
 enum ExecutionEngine {
 	REDSTONE, 
 	NONE
+}
+
+export async function getAllContracts(arweave, filterApproved=true) {
+	const CONTRACT_SRC="GJd-lCWMKIa0k5XibPsnvGEy5eh7DsjAtq_BrCkP1W4";
+	const APPROVED=["6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I"];
+        if (filterApproved) {
+                return APPROVED;
+        }
+        const data = await queryContracts(CONTRACT_SRC, arweave);
+	const contracts = [];
+        data.forEach((edge) => contracts.push(edge.node.id));
+        return contracts;
 }
 
 export default class Arfund {
@@ -23,7 +37,7 @@ export default class Arfund {
 	* @param poolId - ID of the pool's init state to connect to
 	*/
 
-	constructor(poolId: string, arweave: Arweave, localCache=false, executionEngine=ExecutionEngine.REDSTONE) {
+	constructor(poolId: string, arweave: Arweave, localCache=false, balanceUrl="http://gateway-1.arweave.net:1984/", executionEngine=ExecutionEngine.REDSTONE) {
 		this.poolId = poolId;
 		this.cache = localCache;
 		// this.cacheInvalidation = cacheInvalidation;
@@ -34,7 +48,9 @@ export default class Arfund {
 		if (this.execution==ExecutionEngine.REDSTONE) {
 			LoggerFactory.INST.logLevel("fatal");
 			const smartweave = SmartWeaveNodeFactory.memCached(arweave);
-			this.contract = smartweave.contract(this.poolId);				  	}
+			this.contract = smartweave.contract(this.poolId).setEvaluationOptions({
+		walletBalanceUrl: balanceUrl
+	});				  	}
 		this.stateCache = new NodeCache({stdTTL:100});
 		
 	}

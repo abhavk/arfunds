@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 // import { TsLogFactory } from "redstone-smartweave/lib/cjs/logging/node/TsLogFactory";
 // import { TsLogFactory } from "redstone-smartweave";
-import { selectTokenHolder } from "./getRandomHolder";
+import { selectTokenHolder } from "./selectRandomHolder";
 import { getState } from "./getState";
 import NodeCache from "node-cache";
 
