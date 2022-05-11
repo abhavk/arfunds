@@ -1,31 +1,16 @@
 # arfunds
 
-This repository allows interacting with `arfunds` contracts on Arweave. Arfunds is a project designed to help communities raise funds for archival projects around major events of historical importance. Each `arfunds` contract constitutes a pool, and keeps track of all contributions made to a particular pool contract. 
+This repository publishes an npm package that allows interacting with `arfunds` contracts on Arweave. Arfunds is a project designed to help communities raise funds for archival projects around major events of historical importance. Each `arfunds` contract constitutes a pool, and keeps track of all contributions made to a particular pool contract. 
 
-In order to test a deployed sample (`1mKRVBryZ_sGKJXlH2-h1takvfwwzyriK83uWTGmEEk`) contract's state,
-
+Building the package:
 ```
-# Install dependencies
-$ yarn add arweave redstone-smartweave
-
-# Read state of deployed test contract
-$ node src/deployment/read.js
-
-# Contribute to test pool (burns 0.001 AR every time!)
-$ node src/deployment/contribute.js
+npm run build
 ```
 
-In order to test new contracts, 
-```
-# deploy a new contract
-$ node src/deployment/deploy.js
+A demonstration of the usage of `arfunds` is available at [arfunds-client](https://github.com/abhavk/arfunds-client). 
 
-# for local testing
-$ yarn add arlocal@1.1.30
-$ node simple-test.js
-``` 
+## arfunds contracts
+`arfunds` contracts are currently deployed with the tag `Archiving-Pool-v0.1` and the contract source is `GJd-lCWMKIa0k5XibPsnvGEy5eh7DsjAtq_BrCkP1W4
+` on the Arweave network. A test contract is `6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I`.
 
-## Reading from this contract
-`arfunds` contracts are currently deployed with the tag `Archiving-Pool-v0.1` and the contract source is `IpC5qdc3RR04Skcia8VNghBd4WD17rzBgsjPc6t1wMI` on the Arweave network. 
-
-Help public data archival projects raise some `arfunds`!
+Help public data archival projects raise `arfunds`!
