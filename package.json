@@ -19,7 +19,7 @@
     "browserify": "^17.0.0",
     "gql-query-builder": "^3.6.0",
     "node-cache": "^5.1.2",
-    "redstone-smartweave": "^0.4.74"
+    "redstone-smartweave": "^0.4.84"
   },
   "main": "src/library/Arfunds.js",
   "devDependencies": {
