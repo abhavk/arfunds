@@ -18,7 +18,7 @@ const corp_scripts = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wall
 	const contractSrc = fs.readFileSync(path.join(__dirname, "../contracts/contract.js"), "utf8");
         var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
 	const initJson = JSON.parse(initState);
-	initJson.owner = walletAddress;
+	// initJson.owner = walletAddress;
 	initState = JSON.stringify(initJson, null, 2);
 	
 	const customTags = [
@@ -33,12 +33,19 @@ const corp_scripts = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wall
 	
 	// Deploying contract
   	console.log("Deployment started");
-  	const contractTxId = await smartweave.createContract.deploy({
-    		wallet: corp_scripts,
-    		initState: initState,
-    		src: contractSrc,
+  	/* const contractTxId = await smartweave.createContract.deploy({
+    	*	wallet: corp_scripts,
+    	*	initState: initState,
+    	*	src: contractSrc,
+	*	tags: customTags
+  	* });
+	*/
+	const contractTxId = await smartweave.createContract.deployFromSourceTx({
+		wallet: corp_scripts,
+		initState: initState,
+		srcTxId: `GJd-lCWMKIa0k5XibPsnvGEy5eh7DsjAtq_BrCkP1W4`,
 		tags: customTags
-  	});
+	});
   	console.log("Deployment completed: " + contractTxId);
 	
 })();

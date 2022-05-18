@@ -1,15 +1,17 @@
 {
   "name": "arfunds",
-  "version": "1.0.1",
+  "version": "1.1.4",
   "description": "This library allows you to interact with Arweave funding pools for archival projects.",
   "keywords": [
     "arweave",
     "archive"
   ],
   "scripts": {
-    "compile:node": "tsc --declaration -project tsconfig.json",
-    "compile:web": "npx browserify -p esmify ./src/library/tobundle.js -o ./umd/arfunds_bundle.js", 
-    "build": "npm run compile:node && npm run compile:web"
+    "compile:node": "tsc --declaration -project tsconfig.json --outDir build",
+    "compile:web": "npx browserify -p esmify ./tobundle.js -o ./umd/arfunds_bundle.js",
+    "clean": "rm -rf build",
+    "copy": "cp -r src/contracts build/", 
+    "build": "npm run clean && npm run compile:node && npm run compile:web && npm run copy"
   },
   "url": "https://github.com/abhavk/arfunds",
   "author": "Abhav Kedia <abhavkedia@gmail.com> (https://github.com/abhavk)",
@@ -21,14 +23,19 @@
     "node-cache": "^5.1.2",
     "redstone-smartweave": "^0.4.84"
   },
-  "main": "src/library/Arfunds.js",
+  "main": "build/library/Arfunds.js",
   "devDependencies": {
     "esmify": "^2.1.1",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
   "files": [
-	"umd/*"
+	"umd/*",
+	"build/library/*",
+	"build/contracts/*"
      ],
-  "license": "ISC"
+  "license": "ISC",
+  "exclude": [
+	"build/library/*"
+	]
 }

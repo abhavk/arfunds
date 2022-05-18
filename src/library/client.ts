@@ -1,8 +1,9 @@
-import Arfund, { getAllContracts } from "./Arfunds";
-// import { getAllContracts } from "./Arfunds";
-import Arweave from "arweave";
+import Arfund, { getAllContracts, createPool } from "./Arfunds";
+import Arweave from "arweave"; 
+const fs = require("fs");
+const path = require("path");
 
-const poolId = "1mKRVBryZ_sGKJXlH2-h1takvfwwzyriK83uWTGmEEk";
+const poolId = "6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I";
 const arweave = Arweave.init({
                 host: "arweave.net",
                 port: 443,
@@ -14,7 +15,7 @@ const arweave = Arweave.init({
 let fund = new Arfund(poolId, arweave, true);
 
 
-const bhaag = async () => { 
+const test = async () => { 
 	let state;
 	for (let i=0; i<5;i++) {
 		state = await fund.getState();
@@ -26,8 +27,19 @@ const bhaag = async () => {
 		console.log(contributor);
 	}
 	const contracts = await getAllContracts(arweave, true);
-	console.log(contracts);
+        console.log(contracts);
+        const balance = await fund.getOwnerBalance();
+        console.log(`balance = ${balance}`);
+        const initState = await fund.getInitState();
+        console.log(initState);
+        const metadata = await fund.getMetadata();
+        console.log(metadata);
+        const tags = await fund.getNftTags("Client Test", "001", true);
+        console.log(tags);
+	const wallet = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wallet.json"), "utf8"));
+	const newPool = await createPool(arweave, "Arfunds test client", "Testing contract, please do not send funds", wallet, "BGPtWI8nw9N64w3z3d37_2ZHId6i0Y_aGLLpcvdBg0I");
+        console.log(newPool);
 }
 
-bhaag();
+test();
 
