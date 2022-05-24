@@ -8,7 +8,7 @@ import { selectTokenHolder } from "./selectRandomHolder";
 import { getState } from "./getState";
 import NodeCache from "node-cache";
 
-const contractTxId = "6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I";
+const contractTxId = "hrOrRCn3CrgZA6yy2AuAxbJzScAxKjnTQeBV2if4ZnA";
 
 async function archivePoolClient() {
 	const arweave = Arweave.init({
@@ -22,7 +22,9 @@ async function archivePoolClient() {
   	LoggerFactory.INST.logLevel("debug");	
 	
 	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
-	const contract = smartweave.contract(contractTxId);
+	const contract = smartweave.contract(contractTxId).setEvaluationOptions({
+                walletBalanceUrl: "http://gateway-1.arweave.net:1984/"
+        });;
 	
 	let state;
 	state = await getState(contract);

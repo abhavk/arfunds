@@ -6,7 +6,7 @@ import { queryContracts } from "./queryContracts";
 const fs = require("fs");
 const path = require("path");
 
-const CONTRACT_SRC="GJd-lCWMKIa0k5XibPsnvGEy5eh7DsjAtq_BrCkP1W4";
+const CONTRACT_SRC="YWvSw6cVdmfPrZBu7KGwrDVxJLtWSVHYnioSazhzG3A";
 
 enum ExecutionEngine {
 	REDSTONE, 
@@ -14,7 +14,7 @@ enum ExecutionEngine {
 }
 
 export async function getAllContracts(arweave, filterApproved=false) {
-	const APPROVED=["6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I"];
+	const APPROVED=["hrOrRCn3CrgZA6yy2AuAxbJzScAxKjnTQeBV2if4ZnA"];
         if (filterApproved) {
                 return APPROVED;
         }
@@ -30,7 +30,7 @@ export async function createPool(arweave, title, description, wallet, owner, lin
 	if (!(balance.data=="0")) {
 		throw new Error(`Archiving pool address (owner) must have 0 balance at the time of creation. Balance of provided address ${owner} is ${balance.data}`);	
 	}
-	var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
+	var initState = fs.readFileSync(path.join(__dirname, "../contracts/0.5.4/init.json"), "utf8");
 	const initJson = JSON.parse(initState);	
 	initJson.title = title;
 	initJson.useOfProceeds = description;
@@ -86,7 +86,7 @@ export default class Arfund {
 		
 		if (this.execution==ExecutionEngine.REDSTONE) {
 			LoggerFactory.INST.logLevel("fatal");
-			const smartweave = SmartWeaveNodeFactory.memCached(arweave);
+			const smartweave = SmartWeaveNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
 			this.contract = smartweave.contract(this.poolId).setEvaluationOptions({
 		walletBalanceUrl: balanceUrl
 	});				  	}
@@ -123,13 +123,17 @@ export default class Arfund {
 			if (currentState) {
 				return currentState;
 			} else {
-				this.stateLockAvailable=false;
-				console.log("fetching state fresh in getState()");
-				const { state, validity } = await this.contract.readState();
-				console.log(`newly fetched state in getState(): ${state}`);
-				this.stateCache.set("current", state);
-				this.stateLockAvailable=true;
-				return state;
+				try {
+					this.stateLockAvailable=false;
+					const { state, validity } = await this.contract.readState();
+					console.log(`newly fetched state : `);
+					console.log(state);
+					this.stateCache.set("current", state);
+					this.stateLockAvailable=true;
+					return state;
+				} finally {
+					this.stateLockAvailable=true;
+				}
 			}
         	} else {
                 	return currentState;
@@ -151,7 +155,8 @@ export default class Arfund {
 	async getRandomContributor() {
 		console.log("getRandomContributor() called");
 		const state = await this.getState();
-		console.log(`state in getRandomContributor(): ${state}`);
+		console.log(`state in getRandomContributor():`);
+		console.log(state);
 		return selectTokenHolder(state.tokens, state.totalSupply);
 	}
 	

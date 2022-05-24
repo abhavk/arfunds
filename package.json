@@ -1,6 +1,6 @@
 {
   "name": "arfunds",
-  "version": "1.1.4",
+  "version": "1.1.9",
   "description": "This library allows you to interact with Arweave funding pools for archival projects.",
   "keywords": [
     "arweave",
@@ -10,7 +10,7 @@
     "compile:node": "tsc --declaration -project tsconfig.json --outDir build",
     "compile:web": "npx browserify -p esmify ./tobundle.js -o ./umd/arfunds_bundle.js",
     "clean": "rm -rf build",
-    "copy": "cp -r src/contracts build/", 
+    "copy": "cp -R src/contracts build", 
     "build": "npm run clean && npm run compile:node && npm run compile:web && npm run copy"
   },
   "url": "https://github.com/abhavk/arfunds",
@@ -21,7 +21,7 @@
     "browserify": "^17.0.0",
     "gql-query-builder": "^3.6.0",
     "node-cache": "^5.1.2",
-    "redstone-smartweave": "^0.4.84"
+    "redstone-smartweave": "^0.5.4"
   },
   "main": "build/library/Arfunds.js",
   "devDependencies": {
@@ -32,7 +32,7 @@
   "files": [
 	"umd/*",
 	"build/library/*",
-	"build/contracts/*"
+	"build/contracts/0.5.4/*"
      ],
   "license": "ISC",
   "exclude": [
