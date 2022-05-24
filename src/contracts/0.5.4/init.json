@@ -1,0 +1,22 @@
+{
+	// Title of pool
+	"title": "First Archive",
+	// Description of pool information
+	"useOfProceeds": "This is a test archiving pool contract. Proceeds will be burned. Please do not send money to this contract.",
+	// (optional) link to the pool's website
+	"link": "",
+	// wallet address for the pool
+	"owner": "feAbjDNZO2QGHFqBl-KMVvH24n-QYXSbjxPc_Y43nxs",
+	// information about the controller of the wallet in "owner"
+	"ownerInfo": "Contact: abhav@arweave.org",
+	// rewards for contributing to the pool
+	"rewards": "Transferable artefacts",
+	// list of contributors and total contributions by each of them
+	"contributors": {},
+	// "reward tokens" held by each of the contributors
+	"tokens": {},
+	// total amount of contributions (sum of "contributors" values)
+	"totalContributions": "0",
+	// total supply of reward tokens
+	"totalSupply": "0"
+}
