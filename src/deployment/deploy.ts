@@ -13,8 +13,8 @@ const corp_scripts = JSON.parse(fs.readFileSync(path.join(__dirname, "../../wall
                 port: 443,
                 protocol: "https",
         });
-	const contractSrc = fs.readFileSync(path.join(__dirname, "../contracts/0.5.4/contract.js"), "utf8");
-        var initState = fs.readFileSync(path.join(__dirname, "../contracts/0.5.4/init.json"), "utf8");
+	const contractSrc = fs.readFileSync(path.join(__dirname, "../contracts/contract.js"), "utf8");
+        var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
 	const initJson = JSON.parse(initState);
 	console.log(wallet);
 	initJson.owner = wallet;

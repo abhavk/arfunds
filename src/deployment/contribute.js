@@ -15,7 +15,7 @@ async function archivePoolClient(wallet, contractId) {
                 logging: false,
         });
 
-	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
+	const smartweave = SmartWeaveNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
 	const contract = smartweave.contract(contractId).connect(wallet);
 	
 	// state before 

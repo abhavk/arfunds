@@ -6,7 +6,7 @@ import { queryContracts } from "./queryContracts";
 const fs = require("fs");
 const path = require("path");
 
-const CONTRACT_SRC="YWvSw6cVdmfPrZBu7KGwrDVxJLtWSVHYnioSazhzG3A";
+const CONTRACT_SRC="4iQ2HZ65w9TujcERnt77ICA34wu42ijaKn_Rypt1O6A";
 
 enum ExecutionEngine {
 	REDSTONE, 
@@ -14,7 +14,7 @@ enum ExecutionEngine {
 }
 
 export async function getAllContracts(arweave, filterApproved=false) {
-	const APPROVED=["hrOrRCn3CrgZA6yy2AuAxbJzScAxKjnTQeBV2if4ZnA"];
+	const APPROVED=["Kwz9h2BK7fhxD2lJqCZirP-Ek8sm_pvjksNgJ-pWDpY"];
         if (filterApproved) {
                 return APPROVED;
         }
@@ -100,22 +100,22 @@ export default class Arfund {
 	}	
 
 	// public functions
+	resolveState(state) {
+		
+	}
+	
 	// read current state, with caching
 	async getState() {
-		console.log("getState() called");
 		if (!this.cache) {
 			const { state, validity } = await this.contract.readState();
 			return state;
 		}
 		
-		console.log("this.cache is true [in function getState()]!");
 		// if in cache, use that value
 		var currentState = this.stateCache.get("current");
-		console.log(`cached variable "current" in getState(): ${currentState}`);
         	if (currentState == undefined) {
 			// critical section - use locks
 			while (!this.stateLockAvailable) {
-				console.log("other thread is calling state");
 				await new Promise(resolve => setTimeout(resolve, 200));
 	
 			}
@@ -126,8 +126,6 @@ export default class Arfund {
 				try {
 					this.stateLockAvailable=false;
 					const { state, validity } = await this.contract.readState();
-					console.log(`newly fetched state : `);
-					console.log(state);
 					this.stateCache.set("current", state);
 					this.stateLockAvailable=true;
 					return state;
@@ -153,10 +151,7 @@ export default class Arfund {
 	}	
 		
 	async getRandomContributor() {
-		console.log("getRandomContributor() called");
 		const state = await this.getState();
-		console.log(`state in getRandomContributor():`);
-		console.log(state);
 		return selectTokenHolder(state.tokens, state.totalSupply);
 	}
 	
@@ -176,6 +171,14 @@ export default class Arfund {
 		return interactionTx;
 	}
 
+	async commit(){
+		const contractInteractor = this.contract.connect("use_wallet");
+		const interactionTx = await contractInteractor.writeInteraction({
+                        function: "contribute"
+                    });
+		return interactionTx;
+	}
+
 	async getOwnerBalance():Promise<string> {
 		const [state, currentBlock] = await Promise.all([this.getInitState(),this.arweave.api.get(`/block/current`)]);
 		const ownerAddress = state.owner;
@@ -186,8 +189,6 @@ export default class Arfund {
 
 	async getMetadata():Promise<any> {
 		const initState = await this.getInitState();
-		// console.log(JSON.parse(initState));
-		console.log(initState.title);
 		const metadata = ({ title, useOfProceeds, link, owner }) => { return { title, useOfProceeds, link, owner }};
 		return metadata(initState);
 	} 
@@ -202,10 +203,8 @@ export default class Arfund {
          	* Contract-Src: tWSBznzm4ccTlgxRBUmbU-5nqMXtH9W4WhNHVeZS0q0
          	* Init-State: { init state json }
          	*/
-		console.log("getNftTags() called");
 		const tags = []; 
         	const tokenHolder = await this.getRandomContributor();
-		console.log(`token holder in getNftTags function: ${tokenHolder}`);
         	const initialState = {
                 	"title": `${projectName} Artefact`,
                 	"name": `Artefact ${artefactId}`,

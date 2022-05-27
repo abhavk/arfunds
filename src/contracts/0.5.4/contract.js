@@ -20,15 +20,14 @@ function NumberMult(str, scalar) {
 }
 
 export async function handle(state, action) {
-  	const balances = state.balances;
+	const balances = state.balances;
 	const caller = action.caller;
 	switch (action.input.function) {
 		case "contribute": {
 			const contribution = BigInt(SmartWeave.transaction.quantity);
 			const target = SmartWeave.transaction.target;
 			const totalSupply = parseInt(state.totalSupply);
-			const existingBalance = BigInt(await SmartWeave.getBalance(state.owner)) - contribution;
-			
+			 const existingBalance = BigInt(await SmartWeave.getBalance(state.owner)) - contribution;
 			// check inputs
 			if (target != state.owner) {
                                 throw new ContractError(`Please fund the correct owner: ${state.owner}.`);                 

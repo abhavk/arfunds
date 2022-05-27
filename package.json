@@ -1,6 +1,6 @@
 {
   "name": "arfunds",
-  "version": "1.1.9",
+  "version": "1.1.11",
   "description": "This library allows you to interact with Arweave funding pools for archival projects.",
   "keywords": [
     "arweave",
@@ -21,7 +21,7 @@
     "browserify": "^17.0.0",
     "gql-query-builder": "^3.6.0",
     "node-cache": "^5.1.2",
-    "redstone-smartweave": "^0.5.4"
+    "redstone-smartweave": "^0.5.7"
   },
   "main": "build/library/Arfunds.js",
   "devDependencies": {
