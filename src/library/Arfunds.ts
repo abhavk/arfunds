@@ -30,7 +30,7 @@ export async function createPool(arweave, title, description, wallet, owner, lin
 	if (!(balance.data=="0")) {
 		throw new Error(`Archiving pool address (owner) must have 0 balance at the time of creation. Balance of provided address ${owner} is ${balance.data}`);	
 	}
-	var initState = fs.readFileSync(path.join(__dirname, "../contracts/0.5.4/init.json"), "utf8");
+	var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
 	const initJson = JSON.parse(initState);	
 	initJson.title = title;
 	initJson.useOfProceeds = description;
