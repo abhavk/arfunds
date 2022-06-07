@@ -6,7 +6,7 @@ const Arweave = require('arweave');
 const { SmartWeaveNodeFactory, LoggerFactory } = require("redstone-smartweave");
 
 
-async function archivePoolClient(wallet, contractId) {
+async function archivePoolClient(wallet, contractId, amount) {
         const arweave = Arweave.init({
                 host: "arweave.net",
                 port: 443,
@@ -30,11 +30,12 @@ async function archivePoolClient(wallet, contractId) {
         }, [], {
                 target: state.owner,
 		// .000001 AR
-                winstonQty: '1000000'
+                winstonQty: amount
         });
 	console.log(`interaction sent! id: ${interactionTx}`);
 }
 
-const wallet = JSON.parse(fs.readFileSync("../../wallet.json").toString());
+const wallet = JSON.parse(fs.readFileSync("wallet.json").toString());
 const contractId = process.argv[2];
-archivePoolClient(wallet, contractId).catch((e) => console.log(e));
+const amount = process.argv[3];
+archivePoolClient(wallet, contractId, amount).catch((e) => console.log(e));

@@ -6,7 +6,7 @@ import { queryContracts } from "./queryContracts";
 const fs = require("fs");
 const path = require("path");
 
-const CONTRACT_SRC="4iQ2HZ65w9TujcERnt77ICA34wu42ijaKn_Rypt1O6A";
+const CONTRACT_SRC="iZJZIiz1jxpD_PWI6It5HxxC-bO2JKNSW7jWzbCxcYE";
 
 enum ExecutionEngine {
 	REDSTONE, 
@@ -14,7 +14,7 @@ enum ExecutionEngine {
 }
 
 export async function getAllContracts(arweave, filterApproved=false) {
-	const APPROVED=["Kwz9h2BK7fhxD2lJqCZirP-Ek8sm_pvjksNgJ-pWDpY"];
+	const APPROVED=["5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ"];
         if (filterApproved) {
                 return APPROVED;
         }
@@ -100,8 +100,8 @@ export default class Arfund {
 	}	
 
 	// public functions
-	resolveState(state) {
-		
+	resolve(state) {
+		return;			
 	}
 	
 	// read current state, with caching
@@ -126,6 +126,7 @@ export default class Arfund {
 				try {
 					this.stateLockAvailable=false;
 					const { state, validity } = await this.contract.readState();
+					await this.resolve(state);
 					this.stateCache.set("current", state);
 					this.stateLockAvailable=true;
 					return state;

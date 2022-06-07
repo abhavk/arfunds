@@ -49,15 +49,15 @@ async function generateEmptyWallet(arweave) {
 	}
 	
 	// Set up SmartWeave client
-	LoggerFactory.INST.logLevel('error');
+	LoggerFactory.INST.logLevel('debug');
 	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
 	
 	// contract definitions load
 	const destinationWallet = await generateEmptyWallet(arweave);
-	const contractSrc = fs.readFileSync(path.join(__dirname, "./src/contracts/contract.js"), "utf8");
+	const contractSrc = fs.readFileSync(path.join(__dirname, "./src/contracts/0.4.84/contract.js"), "utf8");
 	
 	// some magic to insert new wallet for testing
-	var initState = fs.readFileSync(path.join(__dirname, "./src/contracts/init.json"), "utf8");
+	var initState = fs.readFileSync(path.join(__dirname, "./src/contracts/0.4.84/init.json"), "utf8");
 	const initJson = JSON.parse(initState);
 	const destAddress = await arweave.wallets.jwkToAddress(destinationWallet);
 	initJson.owner = destAddress;
@@ -77,9 +77,9 @@ async function generateEmptyWallet(arweave) {
 	const conInteractor = smartweave.contract(contractTxId).connect(wallet);
 	
 	// test whether arlocal has wallet_list API
-	console.log(`fetching wallet_list`);
-	const wallet_list = await arweave.api.get(`/block/height/1/wallet_list`);
-	console.log(wallet_list);
+	//console.log(`fetching wallet_list`);
+	//const wallet_list = await arweave.api.get(`/block/height/1/wallet_list`);
+	//console.log(wallet_list);
 	// read state
 	const state = await conInteractor.readState();
 	console.log("State before any interactions");
@@ -165,10 +165,10 @@ async function generateEmptyWallet(arweave) {
 	console.log(JSON.stringify(state_4,null,2));	
 	
 	// read arweave wallet balance
-	 arweave.wallets.jwkToAddress(wallet).then(
-	 	(address) => arweave.wallets.getBalance(address).then(
-	 			(balance) => console.log(balance)))
-	
-	arweave.wallets.getBalance('nDNofBkdEJDteCmSJcVJxxAAJz5UEHAXze1hU2GBn-A').then((balance) => console.log(balance));	
+//	 arweave.wallets.jwkToAddress(wallet).then(
+//	 	(address) => arweave.wallets.getBalance(address).then(
+//	 			(balance) => console.log(balance)))
+//	
+//	arweave.wallets.getBalance('nDNofBkdEJDteCmSJcVJxxAAJz5UEHAXze1hU2GBn-A').then((balance) => console.log(balance));	
 	// await arLocal.stop();
 })();

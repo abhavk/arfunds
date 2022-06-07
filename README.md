@@ -6,11 +6,43 @@ A demonstration of the usage of `arfunds` is available at [arfunds-client](https
 
 Building the package:
 ```
-npm run build
+$ npm run build
 ```
 
+In order to deploy and interact with archiving pools, you can use the arfunds library, explained in the aforementioned [arfunds-client](https://github.com/abhavk/arfunds-client) or alternatively you can directly use the command line tools that ship with this library. 
+```
+$ npm run deploy
+Deployment started
+Deployment completed: 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
+
+# read the state of the contract
+$ npm run read 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
+...
+{
+  "title": "Second Archive",
+  "useOfProceeds": "This is a test archiving pool contract. Proceeds will be burned. Please do not send money to this contract.",
+  "link": "",
+  "owner": "AfvYaepZX04uxI324JCUryDHk1cccB4Upnevzwbom1c",
+  "ownerInfo": "Contact: abhav@arweave.org",
+  "rewards": "Transferable artefacts",
+  "contributors": {},
+  "tokens": {},
+  "totalContributions": "0",
+  "totalSupply": "0",
+  "commit": {
+    "n": 949892,
+    "contributors": {
+      "0L_z90sYv36VDoDhrRBffo9KrADWpCaaGQz7hJhhP9g": "1000000"
+    }
+  }
+}
+
+# contribute amount in winstons
+$ npm run contribute 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ 1000000
+...
+interaction sent! id: aGTw43j_LKK9tv-vJEnpC3Mn35hfBpGEoso7hXbyX8c
+
+```
 ## arfunds contracts
-`arfunds` contracts are currently deployed with the tag `Archiving-Pool-v0.1` and the contract source is `GJd-lCWMKIa0k5XibPsnvGEy5eh7DsjAtq_BrCkP1W4
-` on the Arweave network. A test contract is `6-tVIaRu5wJa0gWRF4Bhont5EWbhkK8AhJ3Ki3yDK5I`.
 
 Help public data archival projects raise `arfunds`!

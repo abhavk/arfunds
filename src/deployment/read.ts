@@ -7,7 +7,7 @@ import path from "path";
 import { selectTokenHolder } from "./selectRandomHolder";
 import { getState } from "./getState";
 import NodeCache from "node-cache";
-
+import Arfund from "../library/Arfunds";
 const contractTxId = process.argv[2];
 
 async function archivePoolClient() {
@@ -20,14 +20,11 @@ async function archivePoolClient() {
   	});
 
   	LoggerFactory.INST.logLevel("debug");	
-	
-	const smartweave = SmartWeaveNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
-	const contract = smartweave.contract(contractTxId).setEvaluationOptions({
-                walletBalanceUrl: "http://gateway-1.arweave.net:1984/"
-        });;
+	console.log(`Fetching state for fund ${contractTxId}`);	
+	const fund = new Arfund(contractTxId, arweave, true);
 	
 	let state;
-	state = await getState(contract);
+	state = await fund.getState();
 	console.log(JSON.stringify(state, null, 2));
 	console.log("Selecting random token holder");
 	console.log(selectTokenHolder(state.tokens, state.totalSupply));
