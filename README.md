@@ -11,6 +11,7 @@ $ npm run build
 
 In order to deploy and interact with archiving pools, you can use the arfunds library, explained in the aforementioned [arfunds-client](https://github.com/abhavk/arfunds-client) or alternatively you can directly use the command line tools that ship with this library. 
 ```
+# deploy a new archiving pool (please edit the config.json file with relevant information)
 $ npm run deploy
 Deployment started
 Deployment completed: 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
