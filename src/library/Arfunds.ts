@@ -99,9 +99,85 @@ export default class Arfund {
 		return this.poolId;
 	}	
 
+	allocate(state, toAllocate, sumContribution) {
+        	const commitFactor = Number(toAllocate)/Number(sumContribution);
+        	var sumAllocated = 0;
+        	var remainder = toAllocate % Object.keys(state.commit.contributors).length;
+        	for (var key in state.commit.contributors) {
+                	// @ts-ignore
+			var newAllocation = parseInt(commitFactor*Number(state.commit.contributors[key]));
+                	if (remainder > 0) {
+                        	newAllocation += 1;
+                        	remainder--;
+                	}
+                	sumAllocated += newAllocation;
+                	this.addOrUpdateIntStrings(state.tokens, key, newAllocation);
+                	this.addOrUpdateBigStrings(state.contributors, key, state.commit.contributors[key]);
+        	}
+        	state.totalContributions = (BigInt(state.totalContributions) + sumContribution).toString();
+	}
+	
+	addOrUpdateBigStrings(object, key, qty) {
+        	if (object[key]) {
+                	object[key] = (BigInt(object[key]) + BigInt(qty)).toString();
+        	} else {
+                	object[key] = qty.toString();
+        	}
+	}
+
+	addOrUpdateIntStrings(object, key, qty) {
+        	if (object[key]) {
+                	object[key] = (parseInt(object[key]) + qty).toString();
+        	} else {
+                	object[key] = qty.toString();
+        	}
+	}
+
+
+
 	// public functions
-	resolve(state) {
-		return;			
+	async resolve(state) {
+		if (!state.commit) {
+			return;	
+		} 
+		const currentBlock = await this.arweave.api.get('/block/current');
+		const height = currentBlock.data.height;
+		if (height > state.commit.n) {
+			const totalSupply = parseInt(state.totalSupply);
+			// compute new contribution
+                        var sumContribution = BigInt(0);
+                        for (var key in state.commit.contributors) {
+                                sumContribution += BigInt(state.commit.contributors[key]);
+                           }
+			const existingBalance = BigInt(await this.getWalletBalanceAtHeight(state.owner,height, this.arweave)) - sumContribution;
+			if (existingBalance == BigInt(0)) {
+				// totalSupply==0 => existingBalance==0, but not other way round
+                                // mint 100% of supply (1 M tokens)
+                                state.totalSupply = "1000000";
+                                state.tokens = {};
+                                const toAllocate = 1000000;
+                                this.allocate(state, toAllocate, sumContribution);
+			} else {
+				// @ts-ignore
+				const mintedTokens = parseInt((Number(BigInt(1000000000000)*sumContribution/existingBalance)/1000000000000) * Number(totalSupply));
+                                const adjustmentFactor = Number(totalSupply)/Number(totalSupply + mintedTokens);
+                                var sum = 0;
+                                for (var key in state.tokens) {
+                                        // @ts-ignore
+					const newAlloc = parseInt(state.tokens[key]*adjustmentFactor);
+                                        sum += newAlloc;
+                                        state.tokens[key] = newAlloc.toString();
+                                 };
+                                const toAllocate = totalSupply - sum;
+                                this.allocate(state, toAllocate, sumContribution);
+			}
+			delete state.commit;
+		}			
+	}
+	
+	async getWalletBalanceAtHeight(address, height, arweave) {
+		const balance = await arweave.api.get(`/block/height/${height}/wallet/${address}/balance`)
+		return balance.data;
 	}
 	
 	// read current state, with caching
@@ -175,7 +251,7 @@ export default class Arfund {
 	async commit(){
 		const contractInteractor = this.contract.connect("use_wallet");
 		const interactionTx = await contractInteractor.writeInteraction({
-                        function: "contribute"
+                        function: "commit"
                     });
 		return interactionTx;
 	}
