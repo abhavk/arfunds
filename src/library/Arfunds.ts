@@ -43,7 +43,7 @@ export async function createPool(arweave, title, description, wallet, owner, lin
 	const customTags = [
 		{
                         "name": "App-Type",
-                        "value": "Archiving-Pool-v0.2"
+                        "value": "Archiving-Pool-v1.0"
                 }
 	];
 	
