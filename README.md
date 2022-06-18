@@ -15,8 +15,9 @@ In order to deploy and interact with archiving pools, you can use the `arfunds` 
 $ npm run deploy
 Deployment started
 Deployment completed: 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
-
-# read the state of the contract
+```
+Read the state of the contract
+```
 $ npm run read 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
 ...
 {
@@ -37,8 +38,9 @@ $ npm run read 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ
     }
   }
 }
-
-# contribute amount in winstons
+```
+Contribute amount in winstons
+```
 $ npm run contribute 5Hoz9v0VgecpgHSeljNnZSWNEYff9JmZCIVyQmNpqEQ 1000000
 ...
 interaction sent! id: aGTw43j_LKK9tv-vJEnpC3Mn35hfBpGEoso7hXbyX8c
