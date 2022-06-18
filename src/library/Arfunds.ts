@@ -30,15 +30,25 @@ export async function createPool(arweave, title, description, wallet, owner, lin
 	if (!(balance.data=="0")) {
 		throw new Error(`Archiving pool address (owner) must have 0 balance at the time of creation. Balance of provided address ${owner} is ${balance.data}`);	
 	}
-	var initState = fs.readFileSync(path.join(__dirname, "../contracts/init.json"), "utf8");
-	const initJson = JSON.parse(initState);	
+	const initJson = {
+		"title": "",
+    		"useOfProceeds": "",
+    		"link": "",
+    		"owner": "",
+    		"ownerInfo": "",
+    		"rewards": {},
+		"contributors": {},
+		"tokens": {},
+		"totalContributions": "0",
+		"totalSupply": "0"	
+	};	
 	initJson.title = title;
 	initJson.useOfProceeds = description;
 	initJson.owner = owner;
 	initJson.link = link;
 	initJson.ownerInfo = ownerInfo;
 	initJson.rewards = rewards;
-	initState = JSON.stringify(initJson, null, 2);
+	const initState = JSON.stringify(initJson, null, 2);
 	
 	const customTags = [
 		{
@@ -52,7 +62,7 @@ export async function createPool(arweave, title, description, wallet, owner, lin
 	console.log("Deployment started");
 	const contractTxId = await smartweave.createContract.deployFromSourceTx(
 	{
-                wallet: wallet,
+                wallet: (wallet == undefined) ? "use_wallet" : wallet,
                 initState: initState,
                 srcTxId: CONTRACT_SRC,
                 tags: customTags
