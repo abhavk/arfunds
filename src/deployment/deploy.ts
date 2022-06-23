@@ -3,7 +3,7 @@ import Arfund, { createPool } from "../library/Arfunds";
 const fs = require("fs");
 const path = require("path");
 const Arweave = require("arweave");
-const { SmartWeaveNodeFactory } = require("redstone-smartweave");
+const { WarpNodeFactory } = require("warp-contracts");
 
 const corp_scripts = JSON.parse(fs.readFileSync("wallet.json").toString());
 let config;
