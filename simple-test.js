@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Arweave = require('arweave');
-const { SmartWeaveNodeFactory, LoggerFactory } = require("redstone-smartweave");
+const { WarpNodeFactory, LoggerFactory } = require("warp-contracts");
 const { default: ArLocal } = require("arlocal");
 const test = true;
 console.log(`Testing = ${test}`);
@@ -48,9 +48,9 @@ async function generateEmptyWallet(arweave) {
 
 	}
 	
-	// Set up SmartWeave client
+	// Set up Warp client
 	LoggerFactory.INST.logLevel('debug');
-	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
+	const warp = WarpNodeFactory.memCached(arweave);
 	
 	// contract definitions load
 	const destinationWallet = await generateEmptyWallet(arweave);
@@ -64,7 +64,7 @@ async function generateEmptyWallet(arweave) {
 	initState = JSON.stringify(initJson, null,2);
 		
 	// deploy to arweave - local if test, arweave.net if not
-	const contractTxId = await smartweave.createContract.deploy({
+	const contractTxId = await warp.createContract.deploy({
 		wallet,
 		initState: initState,
 		src: contractSrc
@@ -74,7 +74,7 @@ async function generateEmptyWallet(arweave) {
 	const contribAmount=1000000;
 	
 	// interact with contract
-	const conInteractor = smartweave.contract(contractTxId).connect(wallet);
+	const conInteractor = warp.contract(contractTxId).connect(wallet);
 	
 	// test whether arlocal has wallet_list API
 	//console.log(`fetching wallet_list`);
@@ -118,9 +118,9 @@ async function generateEmptyWallet(arweave) {
 	console.log("State after TEST 2");
 	console.log(JSON.stringify(state_2, null, 2));
 	
-	// TEST 2.b: Read from different smartweave client
-	const fresh_smartweave = SmartWeaveNodeFactory.memCached(arweave);
-	const fresh_interactor = fresh_smartweave.contract(contractTxId).connect(wallet);
+	// TEST 2.b: Read from different Warp client
+	const fresh_warp = WarpNodeFactory.memCached(arweave);
+	const fresh_interactor = fresh_warp.contract(contractTxId).connect(wallet);
 	const state_2b = await fresh_interactor.readState();
 	console.log("State after TEST 2.b");
 	console.log(JSON.stringify(state_2b, null, 2));
@@ -130,7 +130,7 @@ async function generateEmptyWallet(arweave) {
 	console.log("TEST 3");
 	const wallet2 = await generateFundedWallet(arweave);
 	console.log(`Sending another 'contribute' txn from wallet: ${wallet2}`);
-	const conInteractor2 = smartweave.contract(contractTxId).connect(wallet2);
+	const conInteractor2 = warp.contract(contractTxId).connect(wallet2);
 	await conInteractor2.writeInteraction({
                 function: "contribute"
         }, [], {

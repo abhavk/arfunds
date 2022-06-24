@@ -1,5 +1,5 @@
 import Arweave from "arweave";
-import { LoggerFactory, SmartWeaveNodeFactory } from "redstone-smartweave";
+import { LoggerFactory, WarpNodeFactory } from "warp-contracts";
 import fs from "fs";
 import path from "path";
 // import { TsLogFactory } from "redstone-smartweave/lib/cjs/logging/node/TsLogFactory";

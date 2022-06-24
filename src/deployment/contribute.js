@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Arweave = require('arweave');
-const { SmartWeaveNodeFactory, LoggerFactory } = require("redstone-smartweave");
+const { WarpNodeFactory, LoggerFactory } = require("warp-contracts");
 
 
 async function archivePoolClient(wallet, contractId, amount) {
@@ -15,8 +15,8 @@ async function archivePoolClient(wallet, contractId, amount) {
                 logging: false,
         });
 
-	const smartweave = SmartWeaveNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
-	const contract = smartweave.contract(contractId).connect(wallet);
+	const warp = WarpNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
+	const contract = warp.contract(contractId).connect(wallet);
 	
 	// state before 
 	console.log("state before 'contribute' txn");

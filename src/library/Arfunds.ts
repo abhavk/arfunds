@@ -1,5 +1,5 @@
 import Arweave from "arweave";
-import { LoggerFactory, SmartWeaveNodeFactory } from "redstone-smartweave";
+import { LoggerFactory, WarpNodeFactory } from "warp-contracts";
 import NodeCache from "node-cache";
 import { selectTokenHolder } from "./selectRandomHolder";
 import { queryContracts } from "./queryContracts";
@@ -9,7 +9,7 @@ const path = require("path");
 const CONTRACT_SRC="iZJZIiz1jxpD_PWI6It5HxxC-bO2JKNSW7jWzbCxcYE";
 
 enum ExecutionEngine {
-	REDSTONE, 
+	WARP, 
 	NONE
 }
 
@@ -57,10 +57,10 @@ export async function createPool(arweave, title, description, wallet, owner, lin
                 }
 	];
 	
-	const smartweave = SmartWeaveNodeFactory.memCached(arweave);
+	const warp = WarpNodeFactory.memCached(arweave);
 	// Deploying contract
 	console.log("Deployment started");
-	const contractTxId = await smartweave.createContract.deployFromSourceTx(
+	const contractTxId = await warp.createContract.deployFromSourceTx(
 	{
                 wallet: (wallet == undefined) ? "use_wallet" : wallet,
                 initState: initState,
@@ -87,17 +87,17 @@ export default class Arfund {
 	* @param poolId - ID of the pool's init state to connect to
 	*/
 
-	constructor(poolId: string, arweave: Arweave, localCache=false, balanceUrl="http://gateway-1.arweave.net:1984/", executionEngine=ExecutionEngine.REDSTONE, cacheInvalidation=100) {
+	constructor(poolId: string, arweave: Arweave, localCache=false, balanceUrl="http://gateway-1.arweave.net:1984/", executionEngine=ExecutionEngine.WARP, cacheInvalidation=100) {
 		this.poolId = poolId;
 		this.cache = localCache;
 		this.execution = executionEngine; 
 		this.arweave=arweave;
 		this.stateLockAvailable = true;		
 		
-		if (this.execution==ExecutionEngine.REDSTONE) {
+		if (this.execution==ExecutionEngine.WARP) {
 			LoggerFactory.INST.logLevel("fatal");
-			const smartweave = SmartWeaveNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
-			this.contract = smartweave.contract(this.poolId).setEvaluationOptions({
+			const warp = WarpNodeFactory.memCachedBased(arweave).useArweaveGateway().build();
+			this.contract = warp.contract(this.poolId).setEvaluationOptions({
 		walletBalanceUrl: balanceUrl
 	});				  	}
 		this.stateCache = new NodeCache({stdTTL:cacheInvalidation});
